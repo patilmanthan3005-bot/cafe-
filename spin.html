@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spin & Win — Cafe of Heaven</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/spin.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="index.html">☕ Cafe <span>of Heaven</span></a>
+  <div class="nav-links">
+    <a class="nav-link" href="index.html">🏠 Home</a>
+    <a class="nav-link" href="menu.html">🍽️ Menu</a>
+    <a class="nav-link" href="build.html">🎨 Build Your Own</a>
+    <a class="nav-link" href="mood.html">😊 Mood Selector</a>
+    <a class="nav-link" href="favourites.html">❤️ Favourites</a>
+    <a class="nav-link active" href="spin.html">🎡 Spin & Win</a>
+  </div>
+  <div style="display:flex;gap:10px;align-items:center;">
+    <a class="nav-link" href="login.html">👤 Account</a>
+    <button class="cart-btn" onclick="window.location.href='cart.html'">🛒 Cart <span class="cart-count" id="cartCount">0</span></button>
+  </div>
+</nav>
+
+<!-- PAGE BG -->
+<div class="spin-bg"></div>
+
+<!-- HERO -->
+<section class="spin-hero">
+  <div class="spin-hero-badge">🎡 Spin & Win</div>
+  <h1>Try Your <em>Luck!</em></h1>
+  <p>One spin per visit — win discounts, free drinks, and surprise rewards</p>
+</section>
+
+<!-- WHEEL AREA -->
+<div class="spin-stage">
+
+  <!-- WHEEL WRAP -->
+  <div class="wheel-wrap">
+    <!-- Pointer arrow -->
+    <div class="wheel-pointer">▼</div>
+
+    <!-- Canvas wheel -->
+    <div class="wheel-outer">
+      <canvas id="wheelCanvas" width="400" height="400"></canvas>
+    </div>
+
+    <!-- Center button -->
+    <button class="wheel-spin-btn" id="spinBtn" onclick="spinWheel()">
+      <span class="wsb-inner">SPIN!</span>
+    </button>
+  </div>
+
+  <!-- RIGHT INFO -->
+  <div class="spin-info">
+    <h2 class="si-title">What you can win</h2>
+    <div class="si-prizes" id="siPrizes"></div>
+
+    <!-- Cooldown notice -->
+    <div class="si-notice" id="siNotice" style="display:none;">
+      <div class="sin-icon">⏰</div>
+      <div>
+        <div class="sin-title">Come back tomorrow!</div>
+        <div class="sin-sub">You've already spun today. Your reward is saved to your cart.</div>
+      </div>
+    </div>
+
+    <!-- Current reward -->
+    <div class="si-current-reward" id="siCurrentReward" style="display:none;">
+      <div class="scr-label">🎉 Your Active Reward</div>
+      <div class="scr-name" id="scrName"></div>
+      <button class="scr-cart-btn" onclick="window.location.href='cart.html'">Apply in Cart →</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- WIN MODAL -->
+<div class="win-modal-overlay" id="winModal">
+  <div class="win-modal">
+    <div class="win-confetti" id="winConfetti"></div>
+    <div class="win-icon" id="winIcon">🎉</div>
+    <h2 class="win-title">You Won!</h2>
+    <div class="win-prize" id="winPrize"></div>
+    <p class="win-sub">Your reward has been saved and will be applied automatically at checkout.</p>
+    <div class="win-actions">
+      <button class="win-cart-btn" onclick="goToCart()">🛒 Go to Cart</button>
+      <button class="win-close-btn" onclick="closeWinModal()">Keep Exploring</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<footer><p>© 2026 Cafe of Heaven | All Rights Reserved</p></footer>
+
+<script src="js/main.js"></script>
+<script src="js/spin.js"></script>
+</body>
+</html>

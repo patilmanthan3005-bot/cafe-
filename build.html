@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Build Your Drink — Cafe of Heaven</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/build.css">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="index.html">☕ Cafe <span>of Heaven</span></a>
+  <div class="nav-links">
+    <a class="nav-link" href="index.html">🏠 Home</a>
+    <a class="nav-link" href="menu.html">🍽️ Menu</a>
+    <a class="nav-link" href="build.html">🎨 Build Your Own</a>
+    <a class="nav-link" href="mood.html">😊 Mood Selector</a>
+    <a class="nav-link" href="favourites.html">❤️ Favourites</a>
+    <a class="nav-link" href="spin.html">🎡 Spin & Win</a>
+  </div>
+  <div style="display:flex;gap:10px;align-items:center;">
+    <a class="nav-link" href="login.html">👤 Account</a>
+    <button class="cart-btn" onclick="window.location.href='cart.html'">🛒 Cart <span class="cart-count" id="cartCount">0</span></button>
+  </div>
+</nav>
+
+<!-- ══════════ MODE PICK SCREEN ══════════ -->
+<div id="modeScreen">
+  <div class="mode-badge">✨ Custom Creations</div>
+  <h1 class="mode-title">What are you <em>craving?</em></h1>
+  <p class="mode-sub">Pick your drink type — we'll build the perfect builder just for you</p>
+
+  <div class="mode-cards">
+    <div class="mode-card coffee-card" onclick="selectMode('coffee')">
+      <span class="mode-icon">☕</span>
+      <h2>Coffee</h2>
+      <p>Build your perfect brew — espresso shots, silky lattes, iced cold brews & everything in between</p>
+      <div class="mode-tags">
+        <span class="mode-tag">Espresso</span>
+        <span class="mode-tag">Latte</span>
+        <span class="mode-tag">Cold Brew</span>
+        <span class="mode-tag">Matcha</span>
+        <span class="mode-tag">Food Pairings</span>
+      </div>
+      <button class="mode-btn">Build My Coffee ☕</button>
+    </div>
+
+    <div class="mode-card fruit-card" onclick="selectMode('fruit')">
+      <span class="mode-icon">🍹</span>
+      <h2>Fruit Beverage</h2>
+      <p>Blend vibrant fresh fruits into smoothies, juices & refreshers bursting with natural goodness</p>
+      <div class="mode-tags">
+        <span class="mode-tag">Smoothies</span>
+        <span class="mode-tag">Fresh Juice</span>
+        <span class="mode-tag">Refreshers</span>
+        <span class="mode-tag">Healthy Snacks</span>
+      </div>
+      <button class="mode-btn">Build My Drink 🍹</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ BUILDER SCREEN ══════════ -->
+<div id="builderScreen">
+  <div class="builder-header" id="bHeader">
+    <div class="bh-left">
+      <div class="bh-icon" id="bIcon">☕</div>
+      <div>
+        <div class="bh-title" id="bTitle">Custom Coffee Builder</div>
+        <div class="bh-sub" id="bSub">Craft your perfect brew, one layer at a time</div>
+      </div>
+    </div>
+    <button class="bh-back" onclick="goBack()">← Choose Different Drink</button>
+  </div>
+
+  <div class="builder-layout">
+    <!-- LEFT -->
+    <div class="left-panel" id="leftPanel"></div>
+
+    <!-- CENTRE -->
+    <div class="cup-stage">
+      <div class="size-row">
+        <button class="sz-btn" onclick="setSize('S',this)">S · 250ml</button>
+        <button class="sz-btn active" onclick="setSize('M',this)">M · 400ml</button>
+        <button class="sz-btn" onclick="setSize('L',this)">L · 600ml</button>
+      </div>
+
+      <!-- COFFEE VESSEL -->
+      <div class="coffee-vessel" id="coffeeVessel">
+        <div class="steam-row" id="steamRow">
+          <div class="steam-p" id="sp1"></div>
+          <div class="steam-p" id="sp2"></div>
+          <div class="steam-p" id="sp3"></div>
+        </div>
+        <div class="coffee-whip" id="cWhip"></div>
+        <div class="coffee-foam-top" id="cFoam"></div>
+        <div class="coffee-cup-body">
+          <div class="cup-handle"></div>
+          <div class="cup-inner">
+            <div class="coffee-crema" id="cCrema"></div>
+            <div class="drink-layers" id="coffeeLayers"></div>
+          </div>
+        </div>
+        <div class="cup-saucer"></div>
+        <div class="garnish-row" id="cGarnish" style="top:-52px;left:50%;transform:translateX(-50%);"></div>
+      </div>
+
+      <!-- FRUIT VESSEL -->
+      <div class="fruit-vessel" id="fruitVessel">
+        <div class="glass-straw" id="fStraw"></div>
+        <div class="fruit-foam-top" id="fFoam"></div>
+        <div class="garnish-row" id="fGarnish" style="top:-22px;left:50%;transform:translateX(-50%);"></div>
+        <div class="fruit-glass-body">
+          <div class="glass-shine"></div>
+          <div class="drink-layers" id="fruitLayers"></div>
+          <div class="ice-box" id="iceBox"></div>
+        </div>
+      </div>
+
+      <div class="badge-row" id="badgeRow"></div>
+      <div class="drink-name" id="drinkName">Your Custom Drink</div>
+      <div class="drink-price" id="drinkPrice">Add ingredients to begin</div>
+
+      <div class="actions">
+        <button class="btn-cart" onclick="addToCart()">🛒 Add to Cart</button>
+        <button class="btn-fav" id="favBtn" onclick="saveToFavs()">❤️ Save to Favs</button>
+        <button class="btn-reset" onclick="resetAll()">🔄 Reset</button>
+      </div>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="right-panel">
+      <div class="rp-title">📋 Your Recipe</div>
+      <div id="rightPanel">
+        <div class="empty-msg"><div class="ei">🥤</div><p>Start adding ingredients<br>to build your recipe!</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<footer><p>© 2026 Cafe of Heaven | All Rights Reserved</p></footer>
+
+
+<script src="js/main.js"></script>
+<script src="js/build.js"></script>
+</body>
+</html>

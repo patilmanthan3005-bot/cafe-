@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mood Selector — Cafe of Heaven</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/mood.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="index.html">☕ Cafe <span>of Heaven</span></a>
+  <div class="nav-links">
+    <a class="nav-link" href="index.html">🏠 Home</a>
+    <a class="nav-link" href="menu.html">🍽️ Menu</a>
+    <a class="nav-link" href="build.html">🎨 Build Your Own</a>
+    <a class="nav-link active" href="mood.html">😊 Mood Selector</a>
+    <a class="nav-link" href="favourites.html">❤️ Favourites</a>
+    <a class="nav-link" href="spin.html">🎡 Spin & Win</a>
+  </div>
+  <div style="display:flex;gap:10px;align-items:center;">
+    <a class="nav-link" href="login.html">👤 Account</a>
+    <button class="cart-btn" onclick="window.location.href='cart.html'">🛒 Cart <span class="cart-count" id="cartCount">0</span></button>
+  </div>
+</nav>
+
+<!-- MOOD BG OVERLAY -->
+<div class="mood-bg" id="moodBg"></div>
+
+<!-- HERO SECTION -->
+<section class="mood-hero" id="moodHero">
+  <div class="hero-text">
+    <div class="hero-badge">✨ Mood-Based Picks</div>
+    <h1>How are you <em>feeling</em> today?</h1>
+    <p>Tell us your vibe — we'll find the perfect drink for you</p>
+  </div>
+</section>
+
+<!-- MOOD BUTTONS -->
+<section class="mood-section">
+  <div class="mood-grid" id="moodGrid">
+    <button class="mood-btn" data-mood="sleepy"    onclick="selectMood('sleepy')">    <span class="mb-icon">😴</span><span class="mb-label">Sleepy</span>     </button>
+    <button class="mood-btn" data-mood="studying"  onclick="selectMood('studying')">  <span class="mb-icon">📚</span><span class="mb-label">Studying</span>   </button>
+    <button class="mood-btn" data-mood="working"   onclick="selectMood('working')">   <span class="mb-icon">💻</span><span class="mb-label">Working</span>    </button>
+    <button class="mood-btn" data-mood="relaxed"   onclick="selectMood('relaxed')">   <span class="mb-icon">🧘</span><span class="mb-label">Relaxed</span>    </button>
+    <button class="mood-btn" data-mood="chill"     onclick="selectMood('chill')">     <span class="mb-icon">😎</span><span class="mb-label">Chill</span>      </button>
+    <button class="mood-btn" data-mood="romantic"  onclick="selectMood('romantic')">  <span class="mb-icon">❤️</span><span class="mb-label">Romantic</span>   </button>
+    <button class="mood-btn" data-mood="happy"     onclick="selectMood('happy')">     <span class="mb-icon">😊</span><span class="mb-label">Happy</span>      </button>
+    <button class="mood-btn" data-mood="stressed"  onclick="selectMood('stressed')">  <span class="mb-icon">😵</span><span class="mb-label">Stressed</span>   </button>
+    <button class="mood-btn" data-mood="creative"  onclick="selectMood('creative')">  <span class="mb-icon">🎨</span><span class="mb-label">Creative</span>   </button>
+    <button class="mood-btn" data-mood="luxury"    onclick="selectMood('luxury')">    <span class="mb-icon">✨</span><span class="mb-label">Luxury Vibes</span></button>
+  </div>
+</section>
+
+<!-- RESULT CARD -->
+<section class="result-section" id="resultSection">
+  <div class="result-card" id="resultCard">
+    <div class="result-left">
+      <div class="drink-img-wrap" id="drinkImgWrap">
+        <div class="drink-img-inner" id="drinkImgInner"></div>
+        <div class="drink-glow" id="drinkGlow"></div>
+      </div>
+    </div>
+    <div class="result-right">
+      <div class="mood-chip" id="moodChip"></div>
+      <h2 class="result-name" id="resultName"></h2>
+      <p class="result-desc" id="resultDesc"></p>
+      <div class="result-tags" id="resultTags"></div>
+      <div class="result-price-row">
+        <div class="result-price" id="resultPrice"></div>
+        <div class="result-actions">
+          <button class="fav-btn" id="favBtn" onclick="toggleFav()" title="Save to Favourites">♡</button>
+          <button class="cart-add-btn" id="cartAddBtn" onclick="addToCartMood()">🛒 Add to Cart</button>
+        </div>
+      </div>
+      <div class="result-note" id="resultNote"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ALSO TRY -->
+<section class="also-section" id="alsoSection">
+  <h3 class="also-title">✨ Also try these</h3>
+  <div class="also-grid" id="alsoGrid"></div>
+</section>
+
+<div class="toast" id="toast"></div>
+<footer><p>© 2026 Cafe of Heaven | All Rights Reserved</p></footer>
+
+<script src="js/main.js"></script>
+<script src="js/mood.js"></script>
+</body>
+</html>

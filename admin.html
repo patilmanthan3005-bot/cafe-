@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel — Cafe of Heaven</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+<!-- ══════════════════════════════════════
+     LOGIN SCREEN
+══════════════════════════════════════ -->
+<div class="admin-login-wrap" id="adminLoginWrap">
+  <div class="admin-login-box">
+    <div class="al-logo">☕ <span>Admin</span> Panel</div>
+    <h2>Welcome Back</h2>
+    <p class="al-sub">Sign in to manage Cafe of Heaven</p>
+
+    <div class="al-tabs">
+      <button class="al-tab active" id="alTabLogin" onclick="alSwitchTab('login')">Sign In</button>
+      <button class="al-tab" id="alTabSignup" onclick="alSwitchTab('signup')">Create Admin</button>
+    </div>
+
+    <!-- LOGIN FORM -->
+    <div id="alPanelLogin">
+      <div class="al-group">
+        <label>EMAIL</label>
+        <input type="email" id="alLoginEmail" placeholder="admin@cafeofheaven.com">
+        <span class="al-err" id="alLoginEmailErr"></span>
+      </div>
+      <div class="al-group">
+        <label>PASSWORD</label>
+        <input type="password" id="alLoginPass" placeholder="Enter password">
+        <span class="al-err" id="alLoginPassErr"></span>
+      </div>
+      <div class="al-error-box hidden" id="alLoginErrBox"></div>
+      <button class="al-btn" onclick="adminLogin()">Sign In →</button>
+    </div>
+
+    <!-- SIGNUP FORM -->
+    <div id="alPanelSignup" class="hidden">
+      <div class="al-group">
+        <label>FULL NAME</label>
+        <input type="text" id="alSignupName" placeholder="Admin Name">
+        <span class="al-err" id="alSignupNameErr"></span>
+      </div>
+      <div class="al-group">
+        <label>EMAIL</label>
+        <input type="email" id="alSignupEmail" placeholder="admin@cafeofheaven.com">
+        <span class="al-err" id="alSignupEmailErr"></span>
+      </div>
+      <div class="al-group">
+        <label>SECRET KEY</label>
+        <input type="password" id="alSignupSecret" placeholder="Enter admin secret key">
+        <span class="al-err" id="alSignupSecretErr"></span>
+        <small class="al-hint">Secret key: <strong>COFH2026</strong> (change this in admin.js)</small>
+      </div>
+      <div class="al-group">
+        <label>PASSWORD</label>
+        <input type="password" id="alSignupPass" placeholder="Min. 8 characters">
+        <span class="al-err" id="alSignupPassErr"></span>
+      </div>
+      <button class="al-btn" onclick="adminSignup()">Create Admin Account →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     MAIN ADMIN PANEL
+══════════════════════════════════════ -->
+<div class="admin-wrap hidden" id="adminWrap">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">☕ <span>CoH Admin</span></div>
+    <nav class="sidebar-nav">
+      <button class="snav-btn active" onclick="showSection('dashboard', this)">
+        <span class="snav-icon">📊</span> Dashboard
+      </button>
+      <button class="snav-btn" onclick="showSection('menu', this)">
+        <span class="snav-icon">🍽️</span> Menu Items
+      </button>
+      <button class="snav-btn" onclick="showSection('orders', this)">
+        <span class="snav-icon">🛒</span> Orders
+      </button>
+      <button class="snav-btn" onclick="showSection('customers', this)">
+        <span class="snav-icon">👥</span> Customers
+      </button>
+      <button class="snav-btn" onclick="showSection('rewards', this)">
+        <span class="snav-icon">🎡</span> Rewards
+      </button>
+      <button class="snav-btn" onclick="showSection('spin', this)">
+        <span class="snav-icon">🎰</span> Spin Rounds
+      </button>
+    </nav>
+    <button class="sidebar-logout" onclick="adminLogout()">🚪 Logout</button>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="admin-main">
+
+    <!-- TOP BAR -->
+    <div class="topbar">
+      <button class="hamburger" onclick="toggleSidebar()">☰</button>
+      <div class="topbar-title" id="topbarTitle">Dashboard</div>
+      <div class="topbar-admin" id="topbarAdmin">Admin</div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <section class="admin-section active" id="sec-dashboard">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="sc-icon">🛒</div>
+          <div class="sc-info">
+            <div class="sc-num" id="statTotalOrders">0</div>
+            <div class="sc-lbl">Total Orders</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="sc-icon">💰</div>
+          <div class="sc-info">
+            <div class="sc-num" id="statRevenue">₹0</div>
+            <div class="sc-lbl">Total Revenue</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="sc-icon">👥</div>
+          <div class="sc-info">
+            <div class="sc-num" id="statCustomers">0</div>
+            <div class="sc-lbl">Customers</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="sc-icon">🍽️</div>
+          <div class="sc-info">
+            <div class="sc-num" id="statMenuItems">0</div>
+            <div class="sc-lbl">Menu Items</div>
+          </div>
+        </div>
+      </div>
+      <div class="dash-row">
+        <div class="dash-card">
+          <div class="dc-head">Recent Orders</div>
+          <div id="recentOrdersList"><p class="empty-state">No orders yet.</p></div>
+        </div>
+        <div class="dash-card">
+          <div class="dc-head">Top Selling Items</div>
+          <div id="topItemsList"><p class="empty-state">No data yet.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MENU MANAGEMENT -->
+    <section class="admin-section" id="sec-menu">
+      <div class="section-toolbar">
+        <h2 class="section-title">Menu Items</h2>
+        <button class="btn-primary" onclick="openMenuModal()">+ Add Item</button>
+      </div>
+      <div class="filter-row">
+        <input type="text" class="search-input" placeholder="🔍 Search items..." oninput="filterMenuItems(this.value)">
+        <select class="filter-select" onchange="filterMenuCat(this.value)">
+          <option value="all">All Categories</option>
+          <option value="coffee">☕ Coffee</option>
+          <option value="baked">🥐 Baked</option>
+          <option value="cakes">🎂 Cakes</option>
+          <option value="pizza">🍕 Pizza</option>
+          <option value="burger">🍔 Burgers</option>
+          <option value="pasta">🍝 Pasta</option>
+          <option value="souvenir">🎁 Souvenirs</option>
+        </select>
+      </div>
+      <div class="admin-table-wrap">
+        <table class="admin-table" id="menuTable">
+          <thead>
+            <tr>
+              <th>ID</th><th>Name</th><th>Category</th>
+              <th>Price</th><th>Tags</th><th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="menuTableBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ORDERS -->
+    <section class="admin-section" id="sec-orders">
+      <div class="section-toolbar">
+        <h2 class="section-title">Orders</h2>
+        <select class="filter-select" onchange="filterOrders(this.value)">
+          <option value="all">All Orders</option>
+          <option value="pending">Pending</option>
+          <option value="preparing">Preparing</option>
+          <option value="ready">Ready</option>
+          <option value="delivered">Delivered</option>
+        </select>
+      </div>
+      <div class="admin-table-wrap">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Order ID</th><th>Customer</th><th>Items</th>
+              <th>Total</th><th>Status</th><th>Date</th><th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="ordersTableBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- CUSTOMERS -->
+    <section class="admin-section" id="sec-customers">
+      <div class="section-toolbar">
+        <h2 class="section-title">Customers</h2>
+        <input type="text" class="search-input" placeholder="🔍 Search customers..." oninput="filterCustomers(this.value)">
+      </div>
+      <div class="admin-table-wrap">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>#</th><th>Name</th><th>Email</th>
+              <th>Phone</th><th>Joined</th><th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="customersTableBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- REWARDS -->
+    <section class="admin-section" id="sec-rewards">
+      <div class="section-toolbar">
+        <h2 class="section-title">Spin & Win Rewards</h2>
+        <button class="btn-primary" onclick="openRewardModal()">+ Add Reward</button>
+      </div>
+      <div class="rewards-grid" id="rewardsGrid"></div>
+    </section>
+
+    <!-- SPIN ROUNDS MANAGER -->
+    <section class="admin-section" id="sec-spin">
+      <div class="section-toolbar">
+        <h2 class="section-title">🎰 Spin Rounds Manager</h2>
+        <input type="text" class="search-input" placeholder="🔍 Search customers..." oninput="filterSpinCustomers(this.value)">
+      </div>
+
+      <!-- Stats strip -->
+      <div class="spin-stats-strip">
+        <div class="spin-stat-card">
+          <div class="ssc-icon">👥</div>
+          <div>
+            <div class="ssc-num" id="spinStatCustomers">0</div>
+            <div class="ssc-lbl">Total Customers</div>
+          </div>
+        </div>
+        <div class="spin-stat-card">
+          <div class="ssc-icon">🎡</div>
+          <div>
+            <div class="ssc-num" id="spinStatWithBonus">0</div>
+            <div class="ssc-lbl">Have Bonus Spins</div>
+          </div>
+        </div>
+        <div class="spin-stat-card">
+          <div class="ssc-icon">⭐</div>
+          <div>
+            <div class="ssc-num" id="spinStatTotalBonus">0</div>
+            <div class="ssc-lbl">Total Bonus Spins Given</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Info banner -->
+      <div style="background:#fff3e0;border:1.5px solid #ffcc80;border-radius:12px;padding:12px 18px;margin-bottom:18px;font-size:0.82rem;color:#8a4800;display:flex;align-items:center;gap:10px;">
+        <span style="font-size:1.3rem;">💡</span>
+        <span>Each customer gets <strong>2 spins per day</strong> by default. Use the buttons below to grant extra spins to any customer. Bonus spins are added on top of the daily limit and persist until the customer uses them.</span>
+      </div>
+
+      <div class="admin-table-wrap">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Customer</th>
+              <th>Daily Base</th>
+              <th>Admin Bonus</th>
+              <th>Total Allowed</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="spinTableBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- ══════ MODALS ══════ -->
+
+<!-- MENU ITEM MODAL -->
+<div class="modal-overlay hidden" id="menuModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 id="menuModalTitle">Add Menu Item</h3>
+      <button class="modal-close" onclick="closeMenuModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-row">
+        <div class="al-group">
+          <label>ITEM NAME</label>
+          <input type="text" id="mName" placeholder="e.g. Espresso">
+        </div>
+        <div class="al-group">
+          <label>CATEGORY</label>
+          <select id="mCat">
+            <option value="coffee">☕ Coffee</option>
+            <option value="baked">🥐 Baked</option>
+            <option value="cakes">🎂 Cakes</option>
+            <option value="pizza">🍕 Pizza</option>
+            <option value="burger">🍔 Burgers</option>
+            <option value="pasta">🍝 Pasta</option>
+            <option value="souvenir">🎁 Souvenirs</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-row">
+        <div class="al-group">
+          <label>PRICE (₹)</label>
+          <input type="number" id="mPrice" placeholder="150">
+        </div>
+        <div class="al-group">
+          <label>IMAGE PATH</label>
+          <input type="text" id="mImg" placeholder="images/item.jpg">
+        </div>
+      </div>
+      <div class="al-group">
+        <label>DESCRIPTION</label>
+        <textarea id="mDesc" rows="3" placeholder="Short description..."></textarea>
+      </div>
+      <div class="modal-checks">
+        <label class="check-label"><input type="checkbox" id="mVeg"> 🟢 Veg</label>
+        <label class="check-label"><input type="checkbox" id="mHot"> 🔥 Popular</label>
+        <label class="check-label"><input type="checkbox" id="mNew"> ✨ New</label>
+        <label class="check-label"><input type="checkbox" id="mSpecial"> ⭐ Special</label>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeMenuModal()">Cancel</button>
+      <button class="btn-primary" onclick="saveMenuItem()">Save Item</button>
+    </div>
+  </div>
+</div>
+
+<!-- REWARD MODAL -->
+<div class="modal-overlay hidden" id="rewardModal">
+  <div class="modal" style="max-width:480px;">
+    <div class="modal-head">
+      <h3 id="rewardModalTitle">Add Reward</h3>
+      <button class="modal-close" onclick="closeRewardModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="al-group">
+        <label>REWARD LABEL</label>
+        <input type="text" id="rLabel" placeholder="e.g. Free Coffee">
+      </div>
+      <div class="modal-row">
+        <div class="al-group">
+          <label>TYPE</label>
+          <select id="rType">
+            <option value="free_item">Free Item</option>
+            <option value="discount">Discount %</option>
+            <option value="points">Bonus Points</option>
+            <option value="try_again">Try Again</option>
+          </select>
+        </div>
+        <div class="al-group">
+          <label>VALUE</label>
+          <input type="text" id="rValue" placeholder="e.g. 20 or Free Coffee">
+        </div>
+      </div>
+      <div class="modal-row">
+        <div class="al-group">
+          <label>PROBABILITY (1–100)</label>
+          <input type="number" id="rProb" placeholder="15" min="1" max="100">
+          <small class="al-hint">Higher = lands more often</small>
+        </div>
+        <div class="al-group">
+          <label>COLOR</label>
+          <input type="color" id="rColor" value="#C8962E">
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeRewardModal()">Cancel</button>
+      <button class="btn-primary" onclick="saveReward()">Save Reward</button>
+    </div>
+  </div>
+</div>
+
+<!-- ORDER STATUS MODAL -->
+<div class="modal-overlay hidden" id="orderModal">
+  <div class="modal" style="max-width:400px;">
+    <div class="modal-head">
+      <h3>Update Order Status</h3>
+      <button class="modal-close" onclick="closeOrderModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <p style="margin-bottom:14px;color:var(--text-mid);">Order: <strong id="oModalId"></strong></p>
+      <div class="al-group">
+        <label>NEW STATUS</label>
+        <select id="oModalStatus">
+          <option value="pending">⏳ Pending</option>
+          <option value="preparing">👨‍🍳 Preparing</option>
+          <option value="ready">✅ Ready</option>
+          <option value="delivered">🚀 Delivered</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeOrderModal()">Cancel</button>
+      <button class="btn-primary" onclick="updateOrderStatus()">Update</button>
+    </div>
+  </div>
+</div>
+
+<!-- CUSTOM SPIN MODAL -->
+<div class="modal-overlay hidden" id="customSpinModal">
+  <div class="modal" style="max-width:440px;">
+    <div class="modal-head">
+      <h3>🎡 Grant Custom Spins</h3>
+      <button class="modal-close" onclick="closeCustomSpinModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="cs-modal-info">
+        <div class="cs-modal-cname" id="csModalName"></div>
+        <div class="cs-modal-cemail" id="csModalEmail"></div>
+        <span class="cs-modal-current" id="csModalCurrent"></span>
+      </div>
+      <div class="al-group">
+        <label>NUMBER OF EXTRA SPINS TO GRANT (1–20)</label>
+        <input type="number" id="csSpinCount" placeholder="e.g. 3" min="1" max="20">
+        <small class="al-hint">These are added on top of the customer's current bonus spins.</small>
+      </div>
+      <div class="al-group">
+        <label>REASON / NOTE (optional)</label>
+        <input type="text" id="csSpinNote" placeholder="e.g. Loyalty reward, Birthday treat…">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeCustomSpinModal()">Cancel</button>
+      <button class="btn-primary" onclick="saveCustomSpins()">🎡 Grant Spins</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="adminToast"></div>
+<script src="js/admin.js"></script>
+</body>
+</html>

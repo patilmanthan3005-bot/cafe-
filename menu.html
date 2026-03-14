@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menu — Cafe of Heaven</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/menu.css">
+</head>
+<body>
+
+<!-- ══════════════ NAV ══════════════ -->
+<nav>
+  <a class="nav-logo" href="index.html">☕ Cafe <span>of Heaven</span></a>
+  <div class="nav-links">
+    <a class="nav-link" href="index.html">🏠 Home</a>
+    <a class="nav-link" href="menu.html">🍽️ Menu</a>
+    <a class="nav-link" href="build.html">🎨 Build Your Own</a>
+    <a class="nav-link" href="mood.html">😊 Mood Selector</a>
+    <a class="nav-link" href="favourites.html">❤️ Favourites</a>
+    <a class="nav-link" href="spin.html">🎡 Spin & Win</a>
+  </div>
+  <div class="nav-right">
+    <a class="nav-link" href="login.html">👤 Account</a>
+    <button class="cart-btn" onclick="window.location.href='cart.html'">
+      🛒 Cart <span class="cart-count" id="cartCount">0</span>
+    </button>
+  </div>
+</nav>
+
+<!-- ══════════════ HERO ══════════════ -->
+<div class="menu-hero">
+  <div>
+    <h1>Our <em>Menu</em></h1>
+    <p>Crafted fresh every day — 40+ heavenly items</p>
+  </div>
+  <div class="search-bar">
+    <span class="search-icon">🔍</span>
+    <input type="text" id="searchInput" placeholder="Search pizza, coffee, cakes..." oninput="doSearch()">
+  </div>
+</div>
+
+<!-- ══════════════ CATEGORY BAR ══════════════ -->
+<div class="sticky-cats">
+  <button class="cat-btn active" onclick="filterCat('all',this)">☰ All</button>
+  <button class="cat-btn" onclick="filterCat('coffee',this)">☕ Coffee</button>
+  <button class="cat-btn" onclick="filterCat('baked',this)">🥐 Baked Delights</button>
+  <button class="cat-btn" onclick="filterCat('cakes',this)">🎂 Cakes</button>
+  <button class="cat-btn" onclick="filterCat('pizza',this)">🍕 Pizza</button>
+  <button class="cat-btn" onclick="filterCat('burger',this)">🍔 Burgers</button>
+  <button class="cat-btn" onclick="filterCat('pasta',this)">🍝 Pasta</button>
+  <button class="cat-btn" onclick="filterCat('souvenir',this)">🎁 Souvenirs</button>
+</div>
+
+<!-- ══════════════ MENU BODY ══════════════ -->
+<div class="menu-body" id="menuBody"></div>
+
+<!-- ══════════════ FLOATING CART ══════════════ -->
+<button class="float-cart hidden" id="floatCart" onclick="window.location.href='cart.html'">
+  🛒 View Cart &nbsp;—&nbsp; <span id="floatTotal">₹0</span>
+  <span class="float-cart-badge" id="floatCount">0</span>
+</button>
+
+<div class="toast" id="toast"></div>
+
+<footer><p>© 2026 Cafe of Heaven | All Rights Reserved</p></footer>
+
+<script src="js/menu.js"></script>
+</body>
+</html>

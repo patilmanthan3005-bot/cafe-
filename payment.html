@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment — Cafe of Heaven</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/payment.css">
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="index.html">☕ Cafe <span>of Heaven</span></a>
+  <a class="nav-link" href="cart.html">← Back to Cart</a>
+</nav>
+
+<!-- STEPS -->
+<div class="steps">
+  <div class="step done"><div class="step-circle">✓</div><span>Cart</span></div>
+  <div class="step-line done"></div>
+  <div class="step active"><div class="step-circle">2</div><span>Payment</span></div>
+  <div class="step-line"></div>
+  <div class="step"><div class="step-circle">3</div><span>Confirm</span></div>
+</div>
+
+<!-- MAIN PAGE -->
+<div class="pay-page">
+  <h1>Secure Payment 🔒</h1>
+
+  <!-- LEFT COLUMN -->
+  <div class="pay-left">
+
+    <!-- DELIVERY DETAILS (delivery only — no pickup toggle) -->
+    <div class="panel" id="panelPickup">
+      <h3>🛵 Delivery Details</h3>
+
+      <!-- Customer info -->
+      <div class="form-group">
+        <label>FULL NAME</label>
+        <input type="text" id="custName" placeholder="e.g. Priya Sharma">
+      </div>
+      <div class="row2">
+        <div class="form-group">
+          <label>PHONE</label>
+          <input type="tel" id="custPhone" placeholder="+91 98765 43210">
+        </div>
+        <div class="form-group">
+          <label>EMAIL (for receipt)</label>
+          <input type="email" id="custEmail" placeholder="you@gmail.com">
+        </div>
+      </div>
+
+      <!-- Delivery address -->
+      <div class="section-divider">📍 Delivery Address</div>
+      <div class="form-group">
+        <label>FLAT / HOUSE NO & BUILDING NAME</label>
+        <input type="text" id="addrLine1" placeholder="e.g. Flat 4B, Sunrise Apartments">
+      </div>
+      <div class="form-group">
+        <label>STREET / AREA / LOCALITY</label>
+        <input type="text" id="addrLine2" placeholder="e.g. MG Road, Navrangpura">
+      </div>
+      <div class="row2">
+        <div class="form-group">
+          <label>CITY</label>
+          <input type="text" id="addrCity" placeholder="Ahmedabad">
+        </div>
+        <div class="form-group">
+          <label>PIN CODE</label>
+          <input type="text" id="addrPin" placeholder="380009" maxlength="6">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>LANDMARK (optional)</label>
+        <input type="text" id="addrLandmark" placeholder="Near City Mall, opp. HDFC Bank">
+      </div>
+
+      <div class="form-group" style="margin-top:4px;">
+        <label>SPECIAL INSTRUCTIONS</label>
+        <input type="text" id="custNote" placeholder="e.g. Extra hot, less sugar, nut allergy...">
+      </div>
+
+      <!-- Confirm button -->
+      <button class="confirm-addr-btn" id="confirmAddrBtn" onclick="confirmAddress()">
+        ✅ Confirm Delivery Details
+      </button>
+      <div class="addr-confirmed-msg" id="addrConfirmedMsg" style="display:none;">
+        ✅ Address confirmed! Proceed to payment below.
+      </div>
+    </div>
+
+    <!-- PAYMENT METHOD -->
+    <div class="panel" id="panelPayment">
+      <h3>💳 Choose Payment Method</h3>
+
+      <div class="pay-methods">
+        <div class="pay-method active" onclick="selectPay('card',this)">
+          <div class="pm-icon">💳</div><div class="pm-label">Card</div>
+        </div>
+        <div class="pay-method" onclick="selectPay('upi',this)">
+          <div class="pm-icon">📱</div><div class="pm-label">UPI</div>
+        </div>
+        <div class="pay-method" onclick="selectPay('wallet',this)">
+          <div class="pm-icon">👛</div><div class="pm-label">Wallet</div>
+        </div>
+        <div class="pay-method" onclick="selectPay('cod',this)">
+          <div class="pm-icon">💵</div><div class="pm-label">Cash</div>
+        </div>
+      </div>
+
+      <!-- CARD FORM -->
+      <div class="method-form show" id="form-card">
+        <div class="form-group">
+          <label>CARD NUMBER</label>
+          <div class="card-number-wrap">
+            <input type="text" placeholder="1234  5678  9012  3456" maxlength="19" oninput="formatCard(this)">
+            <span class="card-brand" id="cardBrand">💳</span>
+          </div>
+        </div>
+        <div class="row2">
+          <div class="form-group"><label>EXPIRY DATE</label><input type="text" placeholder="MM / YY" maxlength="7"></div>
+          <div class="form-group"><label>CVV</label><input type="password" placeholder="•••" maxlength="3"></div>
+        </div>
+        <div class="form-group"><label>NAME ON CARD</label><input type="text" placeholder="PRIYA SHARMA"></div>
+      </div>
+
+      <!-- UPI FORM -->
+      <div class="method-form" id="form-upi">
+        <div class="qr-section">
+          <div class="qr-header">
+            <div class="qr-title">📲 Scan to Pay</div>
+            <div class="qr-subtitle">Scan the QR with any UPI app — amount is pre-filled</div>
+          </div>
+          <div class="qr-box">
+            <div class="qr-amount-label" id="qrAmountLabel">Pay ₹0</div>
+            <div id="qrCodeContainer"></div>
+            <div class="qr-note">Scan with GPay, PhonePe, Paytm or BHIM</div>
+            <div class="qr-apps">
+              <span class="qr-app-badge">🟢 GPay</span>
+              <span class="qr-app-badge">🟣 PhonePe</span>
+              <span class="qr-app-badge">🔵 Paytm</span>
+              <span class="qr-app-badge">🟠 BHIM</span>
+            </div>
+          </div>
+          <div class="qr-divider"><span>OR enter UPI ID manually</span></div>
+          <div class="form-group">
+            <label>YOUR UPI ID</label>
+            <input type="text" id="upiIdInput" placeholder="yourname@okaxis / 9876543210@upi">
+          </div>
+          <div class="upi-app-btns">
+            <button class="upi-app-btn" onclick="openUpiApp('gpay')"><span>🟢</span> Google Pay</button>
+            <button class="upi-app-btn" onclick="openUpiApp('phonepe')"><span>🟣</span> PhonePe</button>
+            <button class="upi-app-btn" onclick="openUpiApp('paytm')"><span>🔵</span> Paytm</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- WALLET FORM -->
+      <div class="method-form" id="form-wallet">
+        <div class="qr-section">
+          <div class="qr-header">
+            <div class="qr-title">👛 Wallet Payment</div>
+            <div class="qr-subtitle">Select your wallet and scan the QR to pay</div>
+          </div>
+          <div class="wallet-opts">
+            <div class="wallet-opt active" onclick="selectWallet(this,'paytm')"><span>🔵</span> Paytm</div>
+            <div class="wallet-opt" onclick="selectWallet(this,'amazon')"><span>🟠</span> Amazon Pay</div>
+            <div class="wallet-opt" onclick="selectWallet(this,'mobikwik')"><span>🟢</span> Mobikwik</div>
+            <div class="wallet-opt" onclick="selectWallet(this,'freecharge')"><span>🟡</span> FreeCharge</div>
+          </div>
+          <div class="qr-box" style="margin-top:20px;">
+            <div class="qr-amount-label" id="walletAmountLabel">Pay ₹0</div>
+            <div id="walletQrContainer"></div>
+            <div class="qr-note">Wallet ID: <strong id="walletIdLabel">cafeofheaven@paytm</strong></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- COD FORM -->
+      <div class="method-form" id="form-cod">
+        <div class="cod-box">
+          <div class="cod-icon">💵</div>
+          <div class="cod-text">
+            <div class="cod-title">Cash on Delivery</div>
+            <div class="cod-sub">Pay cash when your order arrives at your door.<br>Please keep exact change ready.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- RIGHT: ORDER SUMMARY -->
+  <div class="summary-panel">
+    <h3>Your Order</h3>
+    <div id="orderItems"></div>
+    <div class="divider"></div>
+    <div class="sum-row"><span>Subtotal</span><span id="sumSub">₹0</span></div>
+    <div class="sum-row"><span>GST (10%)</span><span id="sumTax">₹0</span></div>
+    <div class="sum-row discount-row" id="sumDiscountRow" style="display:none;">
+      <span id="sumDiscountLabel">🎉 Discount</span>
+      <span id="sumDiscount" style="color:#27ae60;font-weight:700;">-₹0</span>
+    </div>
+    <div class="divider"></div>
+    <div class="sum-row total"><span>Total</span><span id="sumTotal">₹0</span></div>
+    <button class="pay-btn" onclick="placeOrder()" id="payBtn">Pay ₹0 →</button>
+    <p class="secure-note">🔒 Secured by 256-bit SSL encryption</p>
+  </div>
+
+</div>
+
+<!-- SUCCESS OVERLAY — no Spin & Win -->
+<div class="success-overlay" id="successOverlay">
+  <div class="success-card">
+    <div class="success-icon">🎉</div>
+    <h2>Order Placed!</h2>
+    <p>Thank you! Your order is on its way.</p>
+    <div class="order-num" id="orderNum">#COH-0000</div>
+    <div class="pts-earned" id="ptsEarned">⭐ You earned 0 points!</div>
+    <div class="success-detail" id="successDetail"></div>
+    <div class="receipt-sent" id="receiptSent" style="display:none;">
+      📧 Receipt sent to your email!
+    </div>
+    <p style="font-size:0.82rem;color:var(--text-mid);margin-bottom:24px;">
+      Estimated delivery time: <strong>30–45 mins</strong>
+    </p>
+    <div class="success-btns">
+      <a class="btn-s" href="menu.html">Order More</a>
+      <a class="btn-s" href="index.html">🏠 Home</a>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- QR Code library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<!-- EmailJS library -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<!-- Payment logic -->
+<script src="js/payment.js"></script>
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cart — Cafe of Heaven</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/cart.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="index.html">☕ Cafe <span>of Heaven</span></a>
+  <div class="nav-links">
+    <a class="nav-link" href="index.html">🏠 Home</a>
+    <a class="nav-link" href="menu.html">🍽️ Menu</a>
+    <a class="nav-link" href="build.html">🎨 Build Your Own</a>
+    <a class="nav-link" href="mood.html">😊 Mood Selector</a>
+    <a class="nav-link" href="favourites.html">❤️ Favourites</a>
+    <a class="nav-link" href="spin.html">🎡 Spin & Win</a>
+  </div>
+  <div style="display:flex;gap:10px;align-items:center;">
+    <a class="nav-link" href="login.html">👤 Account</a>
+    <button class="cart-btn active-cart" onclick="window.location.href='cart.html'">
+      🛒 Cart <span class="cart-count" id="cartCount">0</span>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="cart-hero">
+  <div class="cart-hero-inner">
+    <div class="cart-hero-badge">🛒 Your Order</div>
+    <h1>Your <em>Cart</em></h1>
+    <p>Review your items, then checkout — or spin the wheel for a reward!</p>
+  </div>
+</section>
+
+<!-- REWARD BANNER -->
+<div class="reward-banner" onclick="window.location.href='spin.html'">
+  <div class="rb-left">
+    <div class="rb-icon">🎡</div>
+    <div>
+      <div class="rb-title">Spin the Wheel & Win a Reward!</div>
+      <div class="rb-sub">Unlock discounts, free items & surprise treats — every spin counts</div>
+    </div>
+  </div>
+  <button class="rb-btn">Spin Now →</button>
+</div>
+
+<!-- MAIN -->
+<div class="cart-main" id="cartMain">
+
+  <!-- EMPTY STATE — hidden by default, shown by JS when cart is empty -->
+  <div class="cart-empty" id="cartEmpty" style="display:none;">
+    <div class="ce-icon">🛒</div>
+    <h2>Your cart is empty</h2>
+    <p>Looks like you haven't added anything yet. Let's change that!</p>
+    <div class="ce-links">
+      <a href="menu.html"  class="ce-btn">🍽️ Browse Menu</a>
+      <a href="build.html" class="ce-btn ce-outline">🎨 Build a Drink</a>
+      <a href="mood.html"  class="ce-btn ce-outline">😊 Mood Selector</a>
+    </div>
+  </div>
+
+  <!-- CART LAYOUT — hidden by default, shown by JS when cart has items -->
+  <div class="cart-layout" id="cartLayout" style="display:none;">
+
+    <!-- LEFT: ITEMS LIST -->
+    <div class="cart-items-col">
+      <div class="ci-header">
+        <h2 class="ci-title">Order Items</h2>
+        <button class="ci-clear-btn" onclick="confirmClearCart()">🗑 Clear All</button>
+      </div>
+      <div id="cartItemsList"></div>
+    </div>
+
+    <!-- RIGHT: SUMMARY -->
+    <div class="cart-summary-col">
+      <div class="cs-box">
+        <h3 class="cs-title">Order Summary</h3>
+
+        <div class="cs-row">
+          <span>Subtotal</span>
+          <span id="csSubtotal">₹0</span>
+        </div>
+        <div class="cs-row cs-gst">
+          <span>GST (10%)</span>
+          <span id="csGst">₹0</span>
+        </div>
+
+        <!-- Discount row — hidden until reward/promo applied -->
+        <div class="cs-row cs-discount" id="csDiscountRow" style="display:none;">
+          <span id="csDiscountLabel">🎉 Reward Discount</span>
+          <span id="csDiscount" class="cs-discount-val">-₹0</span>
+        </div>
+
+        <div class="cs-divider"></div>
+        <div class="cs-row cs-total">
+          <span>Total</span>
+          <span id="csTotal">₹0</span>
+        </div>
+
+        <!-- Active reward label -->
+        <div class="cs-reward-tag" id="csRewardTag" style="display:none;"></div>
+
+        <button class="cs-checkout-btn" onclick="proceedCheckout()" id="checkoutBtn">
+          Proceed to Payment →
+        </button>
+
+        <div class="cs-spin-prompt" onclick="window.location.href='spin.html'">
+          🎡 Don't have a reward yet? <strong>Spin the Wheel!</strong>
+        </div>
+      </div>
+
+      <!-- PROMO CODE -->
+      <div class="cs-promo-box">
+        <div class="cs-promo-title">🏷️ Have a Promo Code?</div>
+        <div class="cs-promo-row">
+          <input type="text" id="promoInput" class="cs-promo-input" placeholder="Enter code...">
+          <button class="cs-promo-btn" onclick="applyPromo()">Apply</button>
+        </div>
+        <div class="cs-promo-msg" id="promoMsg"></div>
+      </div>
+    </div>
+
+  </div><!-- /cart-layout -->
+
+</div><!-- /cart-main -->
+
+<!-- CLEAR MODAL -->
+<div class="cart-modal-overlay" id="cartModal">
+  <div class="cart-modal-box">
+    <div class="cart-modal-icon">🗑️</div>
+    <h3>Clear entire cart?</h3>
+    <p>All items will be removed. This can't be undone.</p>
+    <div class="cart-modal-btns">
+      <button class="cm-cancel"  onclick="closeCartModal()">Cancel</button>
+      <button class="cm-confirm" onclick="clearCart()">Yes, Clear</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<footer><p>© 2026 Cafe of Heaven | All Rights Reserved</p></footer>
+
+<script src="js/main.js"></script>
+<script src="js/cart.js"></script>
+</body>
+</html>

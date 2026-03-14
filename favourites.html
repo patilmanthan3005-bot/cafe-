@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Favourites — Cafe of Heaven</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/favourites.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="index.html">☕ Cafe <span>of Heaven</span></a>
+  <div class="nav-links">
+    <a class="nav-link" href="index.html">🏠 Home</a>
+    <a class="nav-link" href="menu.html">🍽️ Menu</a>
+    <a class="nav-link" href="build.html">🎨 Build Your Own</a>
+    <a class="nav-link" href="mood.html">😊 Mood Selector</a>
+    <a class="nav-link active" href="favourites.html">❤️ Favourites</a>
+    <a class="nav-link" href="spin.html">🎡 Spin & Win</a>
+  </div>
+  <div style="display:flex;gap:10px;align-items:center;">
+    <a class="nav-link" href="login.html">👤 Account</a>
+    <button class="cart-btn" onclick="window.location.href='cart.html'">🛒 Cart <span class="cart-count" id="cartCount">0</span></button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="fav-hero">
+  <div class="fav-hero-badge">❤️ Your Collection</div>
+  <h1>Your <em>Favourites</em></h1>
+  <p>Everything you've loved, saved in one place</p>
+  <div class="fav-count-pill" id="favCountPill"></div>
+</section>
+
+<!-- PAGE BODY -->
+<div class="fav-page">
+
+  <!-- EMPTY STATE -->
+  <div class="fav-empty" id="favEmpty">
+    <div class="empty-heart">💔</div>
+    <h2>Nothing saved yet</h2>
+    <p>Tap the ❤️ heart on any drink across the site to save it here</p>
+    <div class="empty-links">
+      <a href="menu.html"  class="empty-btn">🍽️ Browse Menu</a>
+      <a href="build.html" class="empty-btn empty-outline">🎨 Build a Drink</a>
+      <a href="mood.html"  class="empty-btn empty-outline">😊 Mood Selector</a>
+    </div>
+  </div>
+
+  <!-- CARDS GRID -->
+  <div class="fav-grid" id="favGrid"></div>
+
+  <!-- CLEAR ALL -->
+  <div class="fav-clear-wrap" id="favClearWrap" style="display:none;">
+    <button class="clear-btn" onclick="confirmClear()">🗑️ Clear All Favourites</button>
+  </div>
+
+</div>
+
+<!-- CONFIRM MODAL -->
+<div class="fav-modal-bg" id="favModalBg">
+  <div class="fav-modal">
+    <div class="fav-modal-icon">🗑️</div>
+    <h3>Clear all favourites?</h3>
+    <p>This removes every saved item and can't be undone.</p>
+    <div class="fav-modal-btns">
+      <button class="modal-no"  onclick="closeModal()">Cancel</button>
+      <button class="modal-yes" onclick="clearAll()">Yes, Clear All</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<footer><p>© 2026 Cafe of Heaven | All Rights Reserved</p></footer>
+
+<script src="js/main.js"></script>
+<script src="js/favourites.js"></script>
+</body>
+</html>
